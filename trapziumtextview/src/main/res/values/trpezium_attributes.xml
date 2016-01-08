@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TrapeziumTextView">
+        <attr name="back_color" format="color"/>
+        <attr name="backgroundTypes" format="enum">
+            <enum name="circle" value="0"/>
+            <enum name="trapezium" value="1"/>
+        </attr>
+        <attr name="reducing_amount_from_bottom" format="float"/>
+    </declare-styleable>
+</resources>
