@@ -1,1 +1,1 @@
-Service to listen for directory changes even the app is closed.
+Special app for listening to directory changes even the app is closed.
