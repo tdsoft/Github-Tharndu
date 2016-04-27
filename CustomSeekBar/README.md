@@ -1,0 +1,3 @@
+**Custom SeekBar**
+
+This another custom seekbar...
