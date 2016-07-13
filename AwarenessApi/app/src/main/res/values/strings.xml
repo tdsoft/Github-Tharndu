@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AwarenessApi</string>
+    <string name="google_api">AIzaSyCOQvuGKYjMEWTisEM6IVAztn_bUmHvpJ8</string>
+    <string name="err_connecting_google_client">Error connecting google client</string>
+    <string name="err_google_client_connection_suspend">Connection suspended</string>
+    <string name="msg_connected_google_client">Connected google client</string>
+    <string name="geofence_transition_invalid_type">Invalid transition</string>
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown</string>
+    <string name="geofence_transition_notification_text">Geofence</string>
+    <string name="err_google_client_not_connected">Google client not connected</string>
+</resources>
