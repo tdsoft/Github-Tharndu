@@ -148,8 +148,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 
         List<String> focusModes = params.getSupportedFlashModes();
         if (focusModes != null) {
-            if (focusModes
-                    .contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                 params.setFlashMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             }
         }

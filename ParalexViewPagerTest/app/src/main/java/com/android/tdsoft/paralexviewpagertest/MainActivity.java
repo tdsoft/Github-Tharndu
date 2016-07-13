@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         myPageAdaper = new MyPagerAdapter(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        ParallaxItem[] parallaxItems = new ParallaxItem[2];
         parallaxItems[0] = new ParallaxItem(R.id.centerImage,1.5f);
         parallaxItems[1] = new ParallaxItem(R.id.text,0.8f);
 

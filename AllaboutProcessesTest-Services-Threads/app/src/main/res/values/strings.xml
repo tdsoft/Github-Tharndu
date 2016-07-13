@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">All about Processes Test-Services-Threads</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="title_activity_">ActivityA</string>
+    <string name="title_activity_activity_b">ActivityB</string>
+    <string name="title_activity_activity_c">ActivityC</string>
+</resources>

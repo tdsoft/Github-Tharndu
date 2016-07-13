@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "714462402945",
+    "project_id": "chambatest-1328"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982102267614:android:665ad337793575b9",
+        "android_client_info": {
+          "package_name": "com.android.tdsoft.testcrash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqKHi951sLnAxIAvKilQ1Tdq9B15gVupg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

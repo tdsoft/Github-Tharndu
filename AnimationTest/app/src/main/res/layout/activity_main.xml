@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/master_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Anim List"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onAnimListClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scale"
+        android:id="@+id/button2"
+        android:onClick="onScaleClick"
+        android:layout_gravity="center_horizontal" />
+
+    <com.android.tdsoft.animationtest.AnimateEdit
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scale"
+        android:id="@+id/checkEmpty"
+        android:onClick="onCheckEmptyClick"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

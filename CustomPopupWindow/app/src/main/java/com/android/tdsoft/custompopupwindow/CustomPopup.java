@@ -34,8 +34,8 @@ public class CustomPopup {
         // some other visual settings
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-        popupWindow.setWidth((int) (dislayMat.widthPixels * 0.5f));
-        popupWindow.setHeight((int) (dislayMat.heightPixels * 0.3f));
+        popupWindow.setWidth((int) (dislayMat.widthPixels * 0.9f));
+        popupWindow.setHeight((int) (dislayMat.heightPixels * 0.82f));
 
         // set the list view as pop up window content
         popupWindow.setContentView(listViewDogs);
@@ -43,7 +43,7 @@ public class CustomPopup {
     }
 
     public CustomPopup show() {
-        popupWindow.showAsDropDown(anchor, -(popupWindow.getWidth() / 2 - anchor.getWidth() / 2), (int) (0 - (popupWindow.getHeight() + anchor.getHeight() - Utils.getCorrectSize(anchor.getContext(),10))));
+        popupWindow.showAsDropDown(anchor, -(popupWindow.getWidth() / 2 - anchor.getWidth() / 2), (int) (-(popupWindow.getHeight() + anchor.getHeight() - Utils.getCorrectSize(anchor.getContext(),10))));
         return this;
     }
 

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AnimationTest</string>
+    <string name="hello_world">Hello world</string>
+    <string name="button_go">GO</string>
+</resources>

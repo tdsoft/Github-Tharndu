@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">ParalexViewPagerTest</string>
     <string name="hello_blank_fragment">Hello fragment</string>
+
+    <array name="arayas">
+        <item>Item 01</item>
+        <item>Item 02</item>
+        <item>Item 03</item>
+        <item>Item 04</item>
+    </array>
 </resources>
