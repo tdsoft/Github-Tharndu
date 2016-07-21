@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WhereAreYouDude</string>
+    <string name="btn_text_login">Login</string>
+    <string name="hint_uname">Username</string>
+    <string name="hint_passw">Password</string>
+    <string name="msg_pls_wait">Please wait</string>
+</resources>
