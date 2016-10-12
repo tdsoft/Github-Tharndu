@@ -1,14 +1,16 @@
 package com.tdsoft.whereareyoudude.smack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.tdsoft.whereareyoudude.smack.callbacks.OnRosterReceivedListener;
 import com.tdsoft.whereareyoudude.smack.data.Authenticated;
-import com.tdsoft.whereareyoudude.smack.data.ExceptionFailedConnection;
+import com.tdsoft.whereareyoudude.splash.SplashActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -17,18 +19,28 @@ import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smack.chat.ChatManagerListener;
+import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.packet.Stanza;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.roster.packet.RosterPacket;
+import org.jivesoftware.smack.sasl.SASLErrorException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
-import org.jivesoftware.smackx.receipts.ReceiptReceivedListener;
 import org.jxmpp.jid.DomainBareJid;
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Admin on 7/14/2016.
@@ -37,7 +49,7 @@ public class ConnectionManager implements ConnectionListener {
     private static final String TAG = "connectionManager";
 
 
-    private static final String HOST = "192.168.8.120";
+    private static final String HOST = "192.168.8.109";
     private static final int PORT = 5222;
     private static final long TIME_OUT = 5000;
     private static ConnectionManager INSTANCE;
@@ -97,7 +109,7 @@ public class ConnectionManager implements ConnectionListener {
 
                         @Override
                         public void run() {
-                            Toast.makeText(mContext,caller + "=>connecting....", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, caller + "=>connecting....", Toast.LENGTH_LONG).show();
                         }
                     });
                 Log.d(TAG, caller + "=>connecting....");
@@ -112,7 +124,7 @@ public class ConnectionManager implements ConnectionListener {
                                 .post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext, "(" + caller + ")" + "IOException: ",  Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "(" + caller + ")" + "IOException: ", Toast.LENGTH_SHORT).show();
                                     }
                                 });
 
@@ -123,7 +135,7 @@ public class ConnectionManager implements ConnectionListener {
 
                         @Override
                         public void run() {
-                            Toast.makeText(mContext,"(" + caller + ")" + "SMACKException: ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "(" + caller + ")" + "SMACKException: ", Toast.LENGTH_SHORT).show();
                         }
                     });
                     Log.e(TAG, "SMACKException: " + e.getMessage());
@@ -136,7 +148,7 @@ public class ConnectionManager implements ConnectionListener {
 
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext,"(" + caller + ")" + "XMPPException: ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "(" + caller + ")" + "XMPPException: ", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     Log.e(TAG, "XMPPException: " + e.getMessage());
@@ -149,7 +161,7 @@ public class ConnectionManager implements ConnectionListener {
 
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext,"(" + caller + ")" + "InterruptedException: ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "(" + caller + ")" + "InterruptedException: ", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     Log.e(TAG, "XMPPException: " + e.getMessage());
@@ -171,44 +183,55 @@ public class ConnectionManager implements ConnectionListener {
         }).start();
     }
 
-    public XMPPConnection getConnection(){
+    public XMPPConnection getConnection() {
         return mXmpptcpConnection;
     }
 
-    public boolean hasAuthenticated(){
+    public boolean hasAuthenticated() {
         boolean status = false;
-        if(mXmpptcpConnection!=null && mXmpptcpConnection.isConnected() && mXmpptcpConnection.isAuthenticated()){
+        if (mXmpptcpConnection != null && mXmpptcpConnection.isConnected() && mXmpptcpConnection.isAuthenticated()) {
             status = true;
         }
         return status;
     }
 
-    public void login(final String userName, final String password){
-        AsyncTask<Void,Void,Void> taskLogin = new AsyncTask<Void, Void, Void>() {
+    public void login(final String userName, final String password) {
+        AsyncTask<Void, Void, Void> taskLogin = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                if(mXmpptcpConnection!=null && mXmpptcpConnection.isConnected()){
+                if (mXmpptcpConnection != null && mXmpptcpConnection.isConnected()) {
                     try {
 
-                        if(!mXmpptcpConnection.isAuthenticated()) {
+                        if (!mXmpptcpConnection.isAuthenticated()) {
                             mXmpptcpConnection.login(userName, password);
-                            if(mXmpptcpConnection.isAuthenticated()) {
-                                EventBus.getDefault().post(new Authenticated());
+                            if (mXmpptcpConnection.isAuthenticated()) {
+                                EventBus.getDefault().post(new Authenticated(true));
+                            } else {
+                                EventBus.getDefault().post(new Authenticated(false));
                             }
-                        }else{
-                            if(hasLogout){
+                        } else {
+                            if (hasLogout) {
                                 mXmpptcpConnection.login(userName, password);
                                 hasLogout = false;
                             }
-                            if(mXmpptcpConnection.isAuthenticated()) {
-                                EventBus.getDefault().post(new Authenticated());
+                            if (mXmpptcpConnection.isAuthenticated()) {
+                                EventBus.getDefault().post(new Authenticated(true));
+                            } else {
+                                EventBus.getDefault().post(new Authenticated(false));
                             }
                         }
 
 
-                    }catch (SmackException.AlreadyLoggedInException e){
+                    } catch (SmackException.AlreadyLoggedInException e) {
                         sendAvailablePresence();
-                    }catch (XMPPException e) {
+                        if (mXmpptcpConnection.isAuthenticated()) {
+                            EventBus.getDefault().post(new Authenticated(true));
+                        } else {
+                            EventBus.getDefault().post(new Authenticated(false));
+                        }
+                    } catch (SASLErrorException e) {
+                        e.printStackTrace();
+                    } catch (XMPPException e) {
                         e.printStackTrace();
                     } catch (SmackException e) {
                         e.printStackTrace();
@@ -246,16 +269,29 @@ public class ConnectionManager implements ConnectionListener {
     @Override
     public void authenticated(XMPPConnection connection, boolean resumed) {
         Log.d(TAG, "authenticated and resumed " + resumed);
+        ChatManager.getInstanceFor(connection).addChatListener(new ChatManagerListener() {
+            @Override
+            public void chatCreated(Chat chat, boolean createdLocally) {
+                chat.addMessageListener(new ChatMessageListener() {
+                    @Override
+                    public void processMessage(Chat chat, Message message) {
+                        System.out.println(message.getBody());
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void connectionClosed() {
         Log.d(TAG, "connectionClosed");
+        connected = false;
     }
 
     @Override
     public void connectionClosedOnError(Exception e) {
         Log.d(TAG, "connectionClosedOnError :" + e.getMessage());
+        connected = false;
     }
 
     @Override
@@ -271,14 +307,19 @@ public class ConnectionManager implements ConnectionListener {
     @Override
     public void reconnectionFailed(Exception e) {
         Log.d(TAG, "reconnectionFailed :" + e.getMessage());
+        connected = false;
     }
 
     public void logout() {
         sendUnavailablePresence();
+        mXmpptcpConnection.disconnect();
+        Intent intent = new Intent(mContext, SplashActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mContext.startActivity(intent);
     }
 
-    public void sendAvailablePresence(){
-        if(hasAuthenticated()){
+    public void sendAvailablePresence() {
+        if (hasAuthenticated()) {
             Presence offlinePres = new Presence(Presence.Type.available, "", 1, Presence.Mode.available);
             try {
                 mXmpptcpConnection.sendStanza(offlinePres);
@@ -290,8 +331,12 @@ public class ConnectionManager implements ConnectionListener {
         }
     }
 
-    public void sendUnavailablePresence(){
-        if(hasAuthenticated()){
+    public boolean isHasLogout() {
+        return hasLogout;
+    }
+
+    public void sendUnavailablePresence() {
+        if (hasAuthenticated()) {
             Presence offlinePres = new Presence(Presence.Type.unavailable, "", 1, Presence.Mode.away);
             try {
                 mXmpptcpConnection.sendStanza(offlinePres);
@@ -301,6 +346,77 @@ public class ConnectionManager implements ConnectionListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void getRoster(OnRosterReceivedListener onRosterReceivedListener) {
+        List<RosterEntry> rosterEntries = new ArrayList<>();
+        if ((mXmpptcpConnection != null) && mXmpptcpConnection.isConnected() && mXmpptcpConnection.isAuthenticated()) {
+            final Roster roster = Roster.getInstanceFor(mXmpptcpConnection);
+
+            if (!roster.isLoaded())
+                try {
+                    roster.reloadAndWait();
+                } catch (SmackException.NotLoggedInException | SmackException.NotConnectedException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            Collection<RosterEntry> entries = roster.getEntries();
+            if (entries != null) {
+                rosterEntries.addAll(entries);
+            }
+
+        }
+
+        if (onRosterReceivedListener != null) {
+            onRosterReceivedListener.onRosterReceived(rosterEntries);
+        }
+    }
+
+    public void acceptFriendRequest(Jid jid) {
+        if (ConnectionManager.getInstance().getConnection() != null && ConnectionManager.getInstance().getConnection().isConnected() && ConnectionManager.getInstance().getConnection().isAuthenticated()) {
+            Presence subscribed = new Presence(Presence.Type.subscribed);
+            subscribed.setTo(jid);
+            try {
+                ConnectionManager.getInstance().getConnection().sendStanza(subscribed);
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sendFriendRequest(String jid) {
+        if (mXmpptcpConnection != null && mXmpptcpConnection.isConnected() && mXmpptcpConnection.isAuthenticated()) {
+            try {
+                Presence request = new Presence(Presence.Type.subscribe);
+                request.setTo(JidCreate.bareFrom(jid));
+                mXmpptcpConnection.sendStanza(request);
+            } catch (XmppStringprepException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            }
+
+            RosterPacket packet = new RosterPacket();
+            packet.setType(IQ.Type.set);
+            RosterPacket.Item item = null;
+            try {
+                item = new RosterPacket.Item(JidCreate.bareFrom(jid), null);
+                item.setItemType(RosterPacket.ItemType.to);
+                packet.addRosterItem(item);
+                mXmpptcpConnection.sendStanza(packet);
+            } catch (XmppStringprepException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

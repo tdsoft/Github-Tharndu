@@ -1,20 +1,22 @@
 package com.tdsoft.whereareyoudude.smack.service;
 
 import android.app.Notification;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.support.v7.app.NotificationCompat;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.support.v7.app.NotificationCompat;
 
 import com.tdsoft.whereareyoudude.R;
 import com.tdsoft.whereareyoudude.smack.ConnectionManager;
+import com.tdsoft.whereareyoudude.smack.data.User;
 import com.tdsoft.whereareyoudude.splash.SplashActivity;
+import com.tdsoft.whereareyoudude.utils.PreferenceHandler;
 
 public class MySmackService extends Service {
     private static final int NOTIFICATION_ID = 1000;
@@ -31,7 +33,9 @@ public class MySmackService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        ConnectionManager.getInstance().connect("MySmackService");
+        if (!ConnectionManager.connected) {
+            ConnectionManager.getInstance().connect("MySmackService");
+        }
         startForeground();
         return START_NOT_STICKY;
     }
@@ -41,7 +45,7 @@ public class MySmackService extends Service {
         intentFilter.addAction(EXIT_APP);
         registerReceiver(stopServiceReceiver, intentFilter);
 
-        PendingIntent pendingIntentExitApp= PendingIntent.getBroadcast(this, 0, new Intent(EXIT_APP), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentExitApp = PendingIntent.getBroadcast(this, 0, new Intent(EXIT_APP), PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Action exitAppAction = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_close_clear_cancel, "ExitApp", pendingIntentExitApp).build();
 
@@ -82,8 +86,8 @@ public class MySmackService extends Service {
     protected BroadcastReceiver stopServiceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent!=null && intent.getAction()!=null){
-                if(intent.getAction().equals(EXIT_APP)){
+            if (intent != null && intent.getAction() != null) {
+                if (intent.getAction().equals(EXIT_APP)) {
                     ConnectionManager.getInstance().disconnect();
                     stopSelf();
                 }
