@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TD Player</string>
+    <string name="btn_text_yes">Yes</string>
+    <string name="btn_text_no">No</string>
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+
+
+</resources>

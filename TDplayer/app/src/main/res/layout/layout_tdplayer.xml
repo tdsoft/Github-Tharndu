@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <WebView
+        android:id="@+id/youtube_view"
+        android:layout_width="@dimen/webview_width"
+        android:layout_height="@dimen/webview_height"
+        android:clickable="true"/>
+
+</RelativeLayout>
