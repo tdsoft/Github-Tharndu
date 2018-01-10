@@ -1,0 +1,7 @@
+<resources>
+    <string name="hello_world">Hallo Welt</string>
+    <string name="btn_en">Englisch</string>
+    <string name="btn_ru">Russisch</string>
+    <string name="btn_de">Deutsch</string>
+    <string name="btn_fr">Französisch</string>
+</resources>

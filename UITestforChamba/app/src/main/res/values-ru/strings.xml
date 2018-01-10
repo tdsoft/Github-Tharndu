@@ -1,0 +1,7 @@
+<resources>
+    <string name="hello_world">Привет, Мир</string>
+    <string name="btn_en">Английский</string>
+    <string name="btn_ru">Русский</string>
+    <string name="btn_de">Немецкий</string>
+    <string name="btn_fr">Французский</string>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.android.tdsoft.uitestingnightclub.MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <com.devmarvel.creditcardentry.library.CreditCardForm
+            android:id="@+id/credit_card_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:helper_text_color="#22ffee"
+            app:include_exp="false"
+            app:include_helper="false"
+            app:include_security="false"
+            app:include_zip="false" />
+
+        <com.android.tdsoft.tdsliderdatepicker.SliderDatePicker
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+        </com.android.tdsoft.tdsliderdatepicker.SliderDatePicker>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:onClick="onNextPageClick"
+        android:text="New Button" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/img_booking" />
+
+    <SeekBar
+        android:id="@+id/circularSeekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/mTvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="250dp"-->
+    <!--android:layout_height="250dp"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:background="@drawable/bc_web"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="vertical"></LinearLayout>-->
+
+    <!--<com.android.tdsoft.uitestingnightclub.MaskWebView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--app:mask="@drawable/masking_masking_01"-->
+        <!--app:porterduffxfermode="DST_OUT">-->
+
+       <!-- -->
+    <!--</com.android.tdsoft.uitestingnightclub.MaskWebView>-->
+
+
+    <com.android.tdsoft.uitestingnightclub.anserview.AnswerController
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+    </com.android.tdsoft.uitestingnightclub.anserview.AnswerController>
+</LinearLayout>

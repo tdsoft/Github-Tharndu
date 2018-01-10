@@ -1,0 +1,115 @@
+package com.eight25media.chamba.fragment;
+
+
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.eight25media.chamba.R;
+import com.eight25media.chamba.base.BaseFragment;
+import com.eight25media.chamba.databinding.FragmentShowJobBinding;
+import com.eight25media.chamba.widget.BubbleDrawable;
+import com.eight25media.chamba.widget.CustomMapView;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ShowJobFragment extends BaseFragment implements OnMapReadyCallback, CustomMapView.ControlLock {
+
+    private FragmentShowJobBinding mFragmentShowJobBinding;
+    private String mMapFragTag;
+    private GoogleMap mGoogleMap;
+
+    public ShowJobFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       mFragmentShowJobBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_job, container, false);
+        View view = mFragmentShowJobBinding.getRoot();
+        mFragmentShowJobBinding.map.onCreate(savedInstanceState);
+        init();
+        return view;
+    }
+
+    @Override
+    protected void init() {
+        BubbleDrawable bubbleDrawable = new BubbleDrawable(BubbleDrawable.CENTER);
+        bubbleDrawable.setBackColor(getResources().getColor(R.color.colorTransparentGray));
+        bubbleDrawable.setCornerRadius(60f);
+        bubbleDrawable.setPadding(30, 35, 30, 35);
+        mFragmentShowJobBinding.txtPayingAmount.setBackgroundDrawable(bubbleDrawable);
+
+//        SupportMapFragment supportMapFragment = new SupportMapFragment();
+//        supportMapFragment.getMapAsync(this);
+//        this.mMapFragTag = supportMapFragment.getClass().getName();
+//        getFragmentManager().beginTransaction().add(R.id.mapContainer,supportMapFragment,mMapFragTag).commit();
+
+        mFragmentShowJobBinding.map.getMapAsync(this);
+        MapsInitializer.initialize(this.getActivity());
+        mFragmentShowJobBinding.map.setCallback(this);
+        mFragmentShowJobBinding.mapProgressBar.setVisibility(View.VISIBLE);
+
+
+
+        mFragmentShowJobBinding.shiftData.title.setText(R.string.kitchen_helper);
+        mFragmentShowJobBinding.aboutTheJob.txtTitle.setText(R.string.test_lable_about_job);
+        mFragmentShowJobBinding.aboutTheJob.txtDescription.setText(R.string.test_descrp_about_job);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mFragmentShowJobBinding.map.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFragmentShowJobBinding.map.onResume();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mFragmentShowJobBinding.map.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFragmentShowJobBinding.map.onDestroy();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mFragmentShowJobBinding.mapProgressBar.setVisibility(View.GONE);
+        if(googleMap!=null){
+            this.mGoogleMap = googleMap;
+        }else{
+            super.showToast(R.string.msg_err_could_not_load_map);
+        }
+
+    }
+
+
+    @Override
+    public void lock() {
+
+    }
+
+    @Override
+    public void unlock() {
+
+    }
+}
