@@ -61,7 +61,7 @@ public class MyService extends Service implements View.OnTouchListener {
 
         mWindowManager.addView(mDummyView, params2);
 
-        mDummyView.setBackgroundResource(R.drawable.aaa);
+//        mDummyView.setBackgroundResource(R.drawable.aaa);
 
 
         mHardwareKeyWatcher = new HardwareKeyWatcher(this);
@@ -69,13 +69,13 @@ public class MyService extends Service implements View.OnTouchListener {
             @Override
             public void onHomePressed() {
                 System.out.println("onHomePressed");
-               stopService(new Intent(MyService.this, MyService.class));
+//               stopService(new Intent(MyService.this, MyService.class));
             }
 
             @Override
             public void onRecentAppsPressed() {
                 System.out.println("onRecentAppsPressed");
-                stopService(new Intent(MyService.this, MyService.class));
+//                stopService(new Intent(MyService.this, MyService.class));
             }
         });
         mHardwareKeyWatcher.startWatch();
